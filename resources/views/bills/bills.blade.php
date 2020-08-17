@@ -42,8 +42,12 @@
                             <td>{{$bill->folio}}</td>
                             <td>{{$bill->company}}</td>
                             <td>
-                                @if($bill->file)
-                                    <a target="_blank" href="{{Storage::url($bill->file)}}">Archivo</a>
+                                @if($files)
+                                    @foreach ($files as $file)
+                                        @if($file->bill_id == $bill->id)
+                                            <a target="_blank" href="{{Storage::url($file->file)}}">Archivo</a><br>
+                                        @endif
+                                    @endforeach
                                 @endif
 
                             </td>

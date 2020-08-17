@@ -40,11 +40,18 @@
                                 <label for="exampleInputEmail1">Sociedad emisora</label>
                                 <input value="{{$company->name}}" name="company" disabled type="text" class="form-control" id="inputRS" aria-describedby="nameHelp">
                             </div>
-                            <div class="">
-                                <label for="inputFiles">Archivos</label>
-                                <br>
-                                <input name="files[]" type="file" multiple accept="application/pdf,text/xml" required>
-                              </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="inputFiles">Archivos</label>
+                                    <br>
+                                    <input name="file1" type="file">
+                                </div>
+                                <div class="col">
+                                    <label for="inputFiles">Archivos</label>
+                                    <br>
+                                    <input name="file2" type="file">
+                                </div>
+                            </div>
                           
                             <button type="submit" style="" class="btn btn-primary">Agregar</button>
                         </form>

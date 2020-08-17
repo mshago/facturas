@@ -33,7 +33,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($companies as $company)
+                        @foreach ($companies ?? '' as $company)
                             <tr>
                             <td class="text-center">{{$company->id}}</td>
                                 <td>{{$company->name}}</td>

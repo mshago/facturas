@@ -1992,6 +1992,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {},
   created: function created() {
@@ -2010,7 +2012,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       bills: [],
       companies: [],
-      filtered: []
+      files: []
     };
   },
   methods: {
@@ -2030,7 +2032,16 @@ __webpack_require__.r(__webpack_exports__);
             type: "warning",
             allow_dismiss: true
           });
+        } else {
+          that.getFiles();
         }
+      });
+    },
+    getFiles: function getFiles() {
+      var that = this;
+      axios.get("/api/files").then(function (response) {
+        that.files = response.data;
+        console.log(response.data);
       });
     },
     reset: function reset() {
@@ -37845,19 +37856,28 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(bill.rfc))]),
                         _vm._v(" "),
-                        _c("td", [
-                          _c(
-                            "a",
-                            {
-                              attrs: {
-                                target: "_blank",
-                                href:
-                                  "storage/" + bill.file.replace("public/", "")
-                              }
-                            },
-                            [_vm._v("Archivo")]
-                          )
-                        ])
+                        _c(
+                          "td",
+                          _vm._l(_vm.files, function(file) {
+                            return _c("div", { key: file.id }, [
+                              bill.id == file.bill_id
+                                ? _c(
+                                    "a",
+                                    {
+                                      attrs: {
+                                        target: "_blank",
+                                        href:
+                                          "storage/" +
+                                          file.file.replace("public/", "")
+                                      }
+                                    },
+                                    [_vm._v("Archivo")]
+                                  )
+                                : _vm._e()
+                            ])
+                          }),
+                          0
+                        )
                       ])
                     }),
                     0

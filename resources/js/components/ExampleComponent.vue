@@ -70,7 +70,9 @@
                             <td>{{bill.social_reason}}</td>
                             <td>{{bill.rfc}}</td>
                             <td>
-                                <a target="_blank" v-bind:href="'storage/'+bill.file.replace('public/', '')">Archivo</a>
+                              <div v-for="file in files" :key="file.id">
+                                <a v-if="bill.id==file.bill_id" target="_blank" v-bind:href="'storage/'+file.file.replace('public/', '')">Archivo</a>
+                              </div>
                             </td>
                         </tr>
                     </tbody>
@@ -101,7 +103,7 @@ export default {
         },
         bills: [],
         companies: [],
-        filtered: [],
+        files: [],
     };
   },
   methods: {
@@ -120,8 +122,17 @@ export default {
                     type: "warning",
                     allow_dismiss: true,
                 });
+            }else{
+              that.getFiles();
             }
         });
+    },
+    getFiles: function(){
+      var that = this;
+      axios.get("/api/files").then(function (response) {
+        that.files = response.data;
+        console.log(response.data);
+      });
     },
     reset: function(){
         this.bills = null;

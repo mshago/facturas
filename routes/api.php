@@ -23,3 +23,6 @@ Route::get('companies','CompaniesController@list');
 
 //Obtenemos las facturas
 Route::post('bills','BillsController@list');
+
+//Obtenemos los archivos
+Route::get('files','BillsController@files');

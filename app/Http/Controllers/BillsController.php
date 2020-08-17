@@ -19,27 +19,37 @@ class BillsController extends Controller
      */
     public function index()
     {
-        $bills = Bills::select('bills.id','bills.social_reason','bills.rfc','bills.folio','companies.name as company','files_bills.file as file')
+        $user = Auth::id();
+        $bills = Bills::select('bills.id','bills.social_reason','bills.rfc','bills.folio','companies.name as company')
         ->join('companies','bills.company_id','=','companies.id')
-        ->join('files_bills','bills.id','=','files_bills.bill_id')
+        ->join('companies_user','companies_user.companies_id','=','companies.id')
+        ->where('companies_user.user_id','=',$user)
         ->get();
-        return view('bills.bills',compact('bills'));
+
+        $files = DB::table('files_bills')->get();
+        
+        return view('bills.bills',compact('bills'),compact('files'));
     }
 
     /* Obtenemos una lista de las empresas para mostrarlas en
     el componente para buscar una factura  */
     public function list(Request $request){
-        return Bills::select('bills.id','bills.social_reason','bills.rfc','bills.folio','files_bills.file as file')
-        ->join('files_bills','bills.id','=','files_bills.bill_id')
+        return Bills::select('bills.id','bills.social_reason','bills.rfc','bills.folio')
         ->where('company_id','=',$request['company_id'])
         ->where('social_reason','=',$request['social_reason'])
         ->where('rfc','=',$request['rfc'])
         ->orWhere('folio','=',$request['folio'])
         ->get();
+    }
 
+    /* Obtenemos una lista de las empresas para mostrarlas en
+    el componente para buscar una factura  */
+    public function files(){
+        return DB::table('files_bills')->get();
     }
 
 
+    /** Vista agregar con la compañia del usuario */
     public function add(){
         $user = Auth::id();
         $company=Companies::select('companies.id','companies.name')
@@ -64,13 +74,17 @@ class BillsController extends Controller
             'company_id' => $request['company_id']
         ]);
 
-        if($request->hasFile('files')){
-            foreach($request->file('files') as $file){
-                DB::table('files_bills')->insert([
-                    'bill_id' => $bill->id,
-                    'file' => $file->store('public'),
-                ]);
-            }
+        if($request->hasFile('file1')){
+            DB::table('files_bills')->insert([
+                'bill_id' => $bill->id,
+                'file' => $request->file1->store('public'),
+            ]);
+        }
+        if($request->hasFile('file2')){
+            DB::table('files_bills')->insert([
+                'bill_id' => $bill->id,
+                'file' => $request->file2->store('public'),
+            ]);
         }
         return redirect('bills');
     }
@@ -83,8 +97,9 @@ class BillsController extends Controller
     public function edit($id)
     {
         $bill = Bills::findOrFail($id);
+        $files = DB::table('files_bills')->where('bill_id','=',$id)->get();
 
-        return view('bills.edit_bill',compact('bill'));
+        return view('bills.edit_bill',compact('bill'),compact('files'));
     }
 
     /**
@@ -102,10 +117,10 @@ class BillsController extends Controller
             'rfc' => $request['rfc'],
             'folio' => $request['folio']
         ]);
-        if($request->hasFile('files')){
+        if($request->hasFile('file1')){
 
             //Obtenemos los archivos de la base de datos
-            $files = DB::table('files_bills')
+            $file = DB::table('files_bills')
             ->where('bill_id',$id)
             ->get();
 

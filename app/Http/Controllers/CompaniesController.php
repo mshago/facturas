@@ -43,7 +43,7 @@ class CompaniesController extends Controller
             'rfc' => $request['rfc'],
             'email' => $request['email'],
         ]);
-        return view('companies.companies');
+        return redirect('companies');
     }
 
     /**

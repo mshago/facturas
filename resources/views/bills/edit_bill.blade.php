@@ -36,11 +36,28 @@
                                     <input value={{$bill->folio}} maxlength="10" name="folio" type="text" class="form-control" id="exampleFolio" placeholder="Ingrese el folio de la factura">
                                   </div>
                             </div>
-                            <div class="">
-                                <label for="inputFiles">Archivos</label>
-                                <br>
-                                <input value="" name="files[]" type="file" multiple accept="application/pdf,text/xml">
-                              </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="inputFiles">Archivos</label>
+                                    <br>
+                                    @if($files[0])
+                                        <input value="{{$files[0]->file}}" name="file1" type="file">
+                                        {{$files[0]->file}}
+                                    @else
+                                        <input value="" name="file1" type="file">
+                                    @endif
+                                </div>
+                                <div class="col">
+                                    <label for="inputFiles">Archivos</label>
+                                    <br>
+                                    @if($files[1])
+                                        <input value="{{$files[1]->file}}" name="file2" type="file">
+                                        {{$files[1]->file}}
+                                    @else
+                                        <input value="" name="file2" type="file">
+                                    @endif
+                                </div>
+                            </div>
                           
                             <button type="submit" style="" class="btn btn-primary">Agregar</button>
                         </form>
