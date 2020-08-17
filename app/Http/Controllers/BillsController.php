@@ -7,6 +7,8 @@ use App\Companies;
 use App\Bills;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class BillsController extends Controller
 {
@@ -72,27 +74,17 @@ class BillsController extends Controller
         }
         return redirect('bills');
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Bills  $bills
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Bills $bills)
-    {
-        //
-    }
-
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Bills  $bills
      * @return \Illuminate\Http\Response
      */
-    public function edit(Bills $bills)
+    public function edit($id)
     {
-        //
+        $bill = Bills::findOrFail($id);
+
+        return view('bills.edit_bill',compact('bill'));
     }
 
     /**
@@ -102,9 +94,38 @@ class BillsController extends Controller
      * @param  \App\Bills  $bills
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Bills $bills)
+    public function update(Request $request,$id)
     {
-        //
+        $bill = Bills::findOrFail($id);
+        $bill->update([
+            'social_reason' => $request['social_reason'],
+            'rfc' => $request['rfc'],
+            'folio' => $request['folio']
+        ]);
+        if($request->hasFile('files')){
+
+            //Obtenemos los archivos de la base de datos
+            $files = DB::table('files_bills')
+            ->where('bill_id',$id)
+            ->get();
+
+            //Si hay los eliminamos para agregar los nuevos
+            if($files){
+                DB::table('files_bills')
+                ->where('bill_id','=',$id)
+                ->delete();
+            }
+
+            //Agregamos los nuevos archivos
+            foreach($request->file('files') as $file){
+                DB::table('files_bills')->insert([
+                    'bill_id' => $bill->id,
+                    'file' => $file->store('public'),
+                ]);
+            }
+        }
+
+        return redirect('bills');
     }
 
     /**
@@ -113,8 +134,13 @@ class BillsController extends Controller
      * @param  \App\Bills  $bills
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bills $bills)
+    public function destroy($id)
     {
-        //
+        Bills::destroy($id);
+        DB::table('files_bills')
+        ->where('bill_id','=',$id)
+        ->delete();
+
+        return redirect('bills');
     }
 }

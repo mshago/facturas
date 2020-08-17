@@ -39,7 +39,7 @@
                             <td>{{$user->email}}</td>
                             <td>{{$user->company_name}}</td>
                             <td class="td-actions text-center">
-                                <a href="" type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
+                                <a href="{{url('users/'.$user->id)}}" type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
                                     <i class="fa fa-edit"></i>
                                 </a>
                                 <form action="{{url('users/'.$user->id)}}" method="post">

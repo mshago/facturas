@@ -52,9 +52,11 @@ class CompaniesController extends Controller
      * @param  \App\Companies  $companies
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request)
+    public function edit($id)
     {
-        //
+        $company = Companies::findOrFail($id);
+
+        return view('companies.edit_company',compact('company'));
     }
 
     /**
@@ -66,7 +68,10 @@ class CompaniesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $company = Companies::findOrFail($id);
+        $company->update($request->all());
+
+        return redirect('companies');
     }
 
     /**

@@ -43,7 +43,7 @@
                                 <span class="sidebar-normal">{{ __(' Listado de usuarios ') }}</span>
                             </a>
                         </li>
-                        <li class="{{ $elementActive == 'users' ? 'active' : '' }}">
+                        <li class="{{ $elementActive == 'user' ? 'active' : '' }}">
                             <a href="{{ route('users.add_user') }}">
                                 <span class="sidebar-mini-icon">{{ __('AU') }}</span>
                                 <span class="sidebar-normal">{{ __(' Agregar usuario ') }}</span>

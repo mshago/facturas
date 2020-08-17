@@ -42,15 +42,22 @@
                             <td>{{$bill->folio}}</td>
                             <td>{{$bill->company}}</td>
                             <td>
-                            <a target="_blank" href="{{Storage::url($bill->file)}}">Archivo</a>
+                                @if($bill->file)
+                                    <a target="_blank" href="{{Storage::url($bill->file)}}">Archivo</a>
+                                @endif
+
                             </td>
                                 <td class="td-actions text-center">
-                                    <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
+                                    <a type="button" href="{{url('bill/'.$bill->id)}}" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
                                         <i class="fa fa-edit"></i>
-                                    </button>
-                                    <button type="button" rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
-                                        <i class="fa fa-times"></i>
-                                    </button>
+                                    </a>
+                                    <form action="{{url('bills/'.$bill->id)}}" method="post">
+                                        {{csrf_field()}}
+                                        {{method_field('DELETE')}}
+                                        <button  type="submit" rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

@@ -55,19 +55,19 @@ class UserController extends Controller
         return redirect('users');
     }
 
-    public function show($id)
+    public function edit($id)
     {
         $user = User::findOrFail($id);
 
-        //return view('users.edit_user',compact('user'));
+        return view('users.edit_user',compact('user'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request,$id)
     {
         $user = User::findOrFail($id);
         $user->update($request->all());
 
-        index();
+        return redirect('users');
     }
 
     public function destroy($id)

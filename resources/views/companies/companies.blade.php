@@ -41,9 +41,9 @@
                                 <td>{{$company->rfc}}</td>
                                 <td>{{$company->email}}</td>
                                 <td class="td-actions text-center">
-                                    <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
+                                    <a type="button" href="{{url('company/'.$company->id)}}" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
                                         <i class="fa fa-edit"></i>
-                                    </button>
+                                    </a>
                                     <form action="{{url('companies/'.$company->id)}}" method="post">
                                         {{csrf_field()}}
                                         {{method_field('DELETE')}}

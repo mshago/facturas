@@ -39,12 +39,16 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('users/add', ['as' => 'users.add_user','uses' => 'UserController@add']);
 	Route::post('users', 'UserController@store');
 	Route::delete('users/{id}','UserController@destroy');
+	Route::get('users/{id}','UserController@edit');
+	Route::put('users/update/{id}','UserController@update')->name('user.update');
 
 	//Rutas para la administración de empresas
 	Route::get('companies', ['as' => 'companies.companies', 'uses' => 'CompaniesController@index']);
 	Route::get('companies/add', ['as' => 'companies.add_company','uses' => 'CompaniesController@add']);
 	Route::post('companies', 'CompaniesController@store');
 	Route::delete('companies/{id}','CompaniesController@destroy');
+	Route::get('company/{id}','CompaniesController@edit');
+	Route::put('company/update/{id}','CompaniesController@update')->name('company.update');
 
 
 	//Rutas para la administración de facturas
@@ -52,6 +56,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('bills/add', ['as' => 'bills.add_bill','uses' => 'BillsController@add']);
 	Route::post('bills', 'BillsController@store');
 	Route::delete('bills/{id}','BillsController@destroy');
+	Route::get('bill/{id}','BillsController@edit');
+	Route::put('bill/update/{id}','BillsController@update')->name('bill.update');
 
 	//Rutas para la generación de reportes
 	Route::get('report/users', ['as' => 'reportes.usuarios', 'uses' => 'ReportController@reporteUsuarios']);
